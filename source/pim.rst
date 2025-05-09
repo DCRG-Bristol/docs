@@ -7,8 +7,13 @@ This has been slightly edited to suite the style used in the dcrg repositories.
 
 Quickstart
 ----------
+Downlaod the latest Binary from the github repository (pim.mltbx)
+https://github.com/DCRG-Bristol/pim/releases
+run this binary with Matlab open
 
-Download/clone this repo and add it to your Matlab path. To persevre this after install please add the following two line to you `startup.m script <https://uk.mathworks.com/help/matlab/ref/startup.html>`_. Now try the following:
+writing :code:`pim freeze` should now complain no packages are installed.
+
+The following is a brief list of pim commands:
 
 - `pim install [package-name]`: install package by name
 - `pim uninstall [package-name]`: remove package, if installed

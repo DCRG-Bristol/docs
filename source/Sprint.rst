@@ -18,6 +18,10 @@ run this binary with Matlab open. then type the following in the command window
 
 which will downlaod all of the required packages from github.
 
+.. note:: *pim_requirements.txt* is located at the root of the Sprint repositiory, so that must be the current folder in matlab 
+
+
+
 (3) If all packages are correctly installed, running the following script will size an a321 like aircraft `scripts.a321_sizing()`
 
 Congratulations, job done. It's time for the pub, you earned it.

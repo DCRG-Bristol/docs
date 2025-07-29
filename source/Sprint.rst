@@ -1,5 +1,5 @@
 Team Design Sprint June 2025
-====================
+=============================
 
 Example code to size an A321 like aircraft using Baff style modes can be found at the following repository
 https://github.com/DCRG-Bristol/Sprint0626

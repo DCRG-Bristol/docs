@@ -1,0 +1,19 @@
+[submodule "external/baff"]
+	path = external/baff
+	url = https://github.com/dcrg-bristol/baff
+	branch = reworkStations
+[submodule "external/ads"]
+	path = external/ads
+	url = https://github.com/dcrg-bristol/ads
+[submodule "external/pim"]
+	path = external/pim
+	url = https://github.com/dcrg-bristol/pim
+[submodule "external/matran"]
+	path = external/matran
+	url = https://github.com/dcrg-bristol/matran
+[submodule "external/flexcast"]
+	path = external/flexcast
+	url = https://github.com/dcrg-bristol/flexcast
+[submodule "external/matlab-utilities"]
+	path = external/matlab-utilities
+	url = https://github.com/dcrg-bristol/matlab-utilities

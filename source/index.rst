@@ -21,17 +21,6 @@ The packages are generally developed in Matlab and can all be found on the group
 
 .. toctree::
    :maxdepth: 1
-   :caption: Packages:
-
-   pim
-   baff
-   ads
-   flexcast
-   matran
-   matlab
-
-.. toctree::
-   :maxdepth: 1
    :caption: Examples:
 
    GolandWing

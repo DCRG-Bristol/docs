@@ -2,7 +2,7 @@ Installation
 ============
 Note – these tools have primarily been developed in Matlab 2024a; I make no guarantees that it will work in other versions…
 
-1. Install Package Installer for matlab (pim) - go to the latest release page on Github `https://github.com/DCRG-Bristol/pim/releases`` and download “pim.mltbx”. Opening this file with MATLAB already open will install the package manager.
+1. Install Package Installer for matlab (pim) - go to the latest release page on Github `https://github.com/DCRG-Bristol/pim/releases/latest`` and download “pim.mltbx”. Opening this file with MATLAB already open will install the package manager.
 2. Install the relevent package using pim. For example to install baff you can either:
 
    * run the command `pim install dcrg-bristo/baff` to install the latest release of the package from matlab in the MATLAB command window

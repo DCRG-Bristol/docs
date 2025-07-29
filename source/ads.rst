@@ -1,2 +1,0 @@
-Aeroelastic Development Suite (ADS) 
-====================

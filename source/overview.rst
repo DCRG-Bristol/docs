@@ -1,6 +1,16 @@
+Toolkit Overview
+=================
+The aim of this toolkit is to provide an easy way for researchers to share and use MATLAB code for aircraft design and analysis. The toolkit is made up of several packages, each of which provides a specific set of tools or functionality.
+These packages can be installed and used independently, but they are designed to work together to provide a comprehensive set of tools for aircraft aeroelastic design and analysis.
+
+The installation and usage of these packages is made easier by the use of a package manager for MATLAB, which allows users to install packages from various sources such as GitHub, MATLAB Central's File Exchange, or any URL pointing to a .zip file.
+
+Below is a list of some of the packages included in this toolkit, along with their descriptions and links to their respective repositories. These packages are designed to be used in conjunction with each other, but can also be used independently depending on the user's needs.
+
+This is followed by a brief installation guide and a tutorial on how to use the tools provided by these packages.
+
 Package Overviews
-============
-An overview of each of the packages is given below, followed by an installation guide and a brief tutorial on how to use the tools.
++++++++++++++++++
 
 Package Installer for Matlab (pim)
 **********************************
@@ -48,3 +58,70 @@ LACA Framework
 https://github.com/DCRG-Bristol/LACA
 
 A unpolished collection of function to generate VLM models for aeroealstic anaylsis.
+
+
+Installation
++++++++++++++
+Note – these tools have primarily been developed in Matlab 2024a; I make no guarantees that it will work in other versions…
+
+1. Install Package Installer for matlab (pim) - go to the latest release page on Github `https://github.com/DCRG-Bristol/pim/releases/latest`` and download “pim.mltbx”. Opening this file with MATLAB already open will install the package manager.
+2. Install the relevent package using pim. For example to install baff you can either:
+
+   * run the command `pim install dcrg-bristo/baff` to install the latest release of the package from matlab in the MATLAB command window
+   * run the command `pim install dcrg-bristo/baff -t vX.X.X.X”` to install the a specific version from github
+   * clone the repository from github and run the command `pim install ads -u <INSTALL_DIR> --local -e –force` to install a local copy of the package
+
+To install the latest verison of all the packages run the following commands in the MATLAB command window
+:: 
+   pim install dcrg-bristol/matlab-utilities
+   pim install dcrg-bristol/matran
+   pim install dcrg-bristol/baff
+   pim install dcrg-bristol/ads
+   pim install dcrg-bristol/flexcast
+   pim install dcrg-bristol/laca
+
+At this point all the latest toolboxes are installed. If you write the MATLAB command “pim freeze” it should show the installed toolboxes. This may seem like a lot of faff just to some examples, but the point here is that these codes are modular, and by being able to track which versions are installed on your machine it will be easier for you / other people to update the codebases on their machines and ... dare I say it … collaborate...
+
+Getting Started
+++++++++++++++++
+Please see the Getting Started guides for the individual packages for more information on how to use the tools.
+
+
+Developing your Own Package
++++++++++++++++++++++++++++
+Below are a series of design guidelines for developing packages to contribute to this toolkit. These guidelines are not exhaustive, but they should help you get started with developing your own package.
+
+1. Package Structure
+
+   Your package should follow a consistent directory structure to make it easy to navigate and understand. Here is a suggested structure:
+
+   ::
+
+      project
+      ├── tbx
+      │   ├── +{your package name}
+      │   │   ├── +{your package submodule}
+      │   │   ├── your_functions.m
+      ├── docs
+      │   ├── index.rst
+      ├── examples
+      │   ├── example1.m
+      ├── tests
+      │   ├── your_functions_test.m
+      ├── README.md
+      ├── pathlist.txt
+      ├── version.txt
+
+   Your package should be placed in the ``tbx`` directory, with subdirectories for each module or submodule. An ``examples`` directory should contain example scripts demonstrating how to use your package, and the ``tests`` directory should contain unit tests for your package's functionality.
+
+   - Package installer for matlab (pim) will read the ``pathlist.txt`` file to find the paths to your package directories. This file should contain the paths you want added to the matlab path, one per line (e.g. one line with tbx for simple packages).
+   - The ``version.txt`` file should contain the version number of your package, which will be used by pim to manage package versions.
+   - The ``README.md`` file should provide an overview of your package, including its purpose, how to install it, and how to use it.
+1. Documentation
+
+    Your package should include documentation to help users understand how to use it. If your package is included as a submodule in the drcg docs repository then
+
+    - The `docs` directory will be copied to the docs repository and the documentation will be built using sphinx and included in the pacakge overview section. The entry point for sphinx will be `index.rst`. If this does nto exist only stub documentation will be made for this package.
+    - The contents of `tbx` will be copied to the docs repository and the matlab sphinx extension will be used to generate documentation for the package. This auto-generated documentation is available in the API reference section of this website.
+
+

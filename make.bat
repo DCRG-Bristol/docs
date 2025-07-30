@@ -22,7 +22,7 @@ if %errorlevel% neq 0 (
     exit /b 1
 )
 
-sphinx-build -b html docs docs\build\html
+sphinx-autobuild docs docs\build\html
 if %errorlevel% neq 0 (
     echo ❌ Error building documentation
     cd ..\..\..

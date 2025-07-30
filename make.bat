@@ -1,40 +1,51 @@
-@REM @echo off
-@REM setlocal enabledelayedexpansion
-
 @echo off
-echo 🔄 Updating submodules...
+setlocal enabledelayedexpansion
+
+REM --- Submodule Checkout Script ---
 git submodule update --init --recursive
 
-REM Loop through each submodule using PowerShell
-for /f "tokens=*" %%s in ('git config --file .gitmodules --get-regexp path ^| powershell -Command "$input | ForEach-Object { ($_ -split ' ')[1] }"') do (
-    echo Updating %%s
-    pushd %%s
+REM Loop through each submodule path and call a subroutine for each
+for /f "tokens=2" %%s in ('git config --file .gitmodules --get-regexp path') do (
+    if not "%%s"=="" call :update_submodule "%%s"
+)
+goto :after_submodules
 
-    REM Fetch all tags and branches
-    git fetch --all --tags
+:update_submodule
+set "SUBMODULE=%~1"
+echo Updating %SUBMODULE%
+pushd %SUBMODULE%
 
-    REM Get the latest tag
-    for /f %%t in ('powershell -Command "git tag --sort=-v:refname ^| Select-Object -First 1"') do (
-        git checkout %%t 2>nul
-        if errorlevel 1 (
-            echo ❌ Checkout of tag %%t failed, falling back to default branch
-            for /f %%d in ('powershell -Command "(git remote show origin) -match 'HEAD branch' -replace '.*: ', ''"') do git checkout origin/%%d
-        ) else (
-            echo Checked out latest tag: %%t
-        )
-        goto :done
-    )
+git fetch --all --tags
 
-    REM If no tag was found, fallback to default branch
-    echo No tags found, checking out default branch
-    for /f %%d in ('powershell -Command "(git remote show origin) -match 'HEAD branch' -replace '.*: ', ''"') do git checkout origin/%%d
-
-    :done
-    popd
+REM Get latest tag
+set "LATEST_TAG="
+for /f "delims=" %%t in ('git tag --sort=-v:refname') do (
+    if not defined LATEST_TAG set "LATEST_TAG=%%t"
 )
 
+if defined LATEST_TAG (
+    echo Found latest tag: !LATEST_TAG!
+    git checkout !LATEST_TAG!
+) else (
+    REM Get default branch name
+    set "BRANCH="
+    for /f "tokens=3" %%b in ('git remote show origin ^| findstr /c:"HEAD branch"') do (
+        set "BRANCH=%%b"
+    )
+    if not defined BRANCH set "BRANCH=master"
+    echo No tags found, checking out latest on !BRANCH!
+    git checkout !BRANCH!
+    git pull origin !BRANCH!
+)
+
+popd
+exit /b
+
+:after_submodules
+
+REM Continue with your build steps...
 echo 📋 Cleaning Output and Copying Default docs
-python copy_package_docs.py
+python copy_packages.py
 if %errorlevel% neq 0 (
     echo ❌ Error copying package docs
     exit /b 1

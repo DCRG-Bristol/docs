@@ -9,7 +9,7 @@ Each time you restart matlab you will need to run the command “pim init” to 
 
 The first time you run a Nastran analysis a file dialog box will open asking you to select a Nastran executable. These can be found somewhere like “C:\MSC.Software\MSC_Nastran\2022.1\bin”. You want to select the “nastran.exe” executable, not for example the “nastranw.exe”…. If you select the wrong one or just want to change which executable you use, run the command “ads.nast.getExe(true)”, this will reopen the dialog box so you can pick a different executable.
 
-**I Cant read the results on an Aeroelastic analysis from the HDF5 file (Nastran)?**
+**I cant read the results on an Aeroelastic analysis from the HDF5 file (Nastran)?**
 
 Aeroelastic analysis in Nastran changed significantly between the 2018 and 2022 releases (the two we can install on Uni machines). The sol144 and 145 solution probably will only work with Nastran 2022 whereas the sol103 solution should work with previous versions (more results are now stored in the hdf5 file which is much quicker to read). 
 

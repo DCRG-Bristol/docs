@@ -16,7 +16,6 @@ The packages are generally developed in Matlab and can all be found on the group
    :caption: Overview:
    
    overview
-   install
    FAQ
 
 .. toctree::

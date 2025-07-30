@@ -1,30 +1,50 @@
-@echo off
-setlocal enabledelayedexpansion
+@REM @echo off
+@REM setlocal enabledelayedexpansion
 
+@echo off
 echo 🔄 Updating submodules...
 git submodule update --init --recursive
-if %errorlevel% neq 0 (
-    echo ❌ Error updating submodules
-    exit /b 1
+
+REM Loop through each submodule using PowerShell
+for /f "tokens=*" %%s in ('git config --file .gitmodules --get-regexp path ^| powershell -Command "$input | ForEach-Object { ($_ -split ' ')[1] }"') do (
+    echo Updating %%s
+    pushd %%s
+
+    REM Fetch all tags and branches
+    git fetch --all --tags
+
+    REM Get the latest tag
+    for /f %%t in ('powershell -Command "git tag --sort=-v:refname ^| Select-Object -First 1"') do (
+        git checkout %%t 2>nul
+        if errorlevel 1 (
+            echo ❌ Checkout of tag %%t failed, falling back to default branch
+            for /f %%d in ('powershell -Command "(git remote show origin) -match 'HEAD branch' -replace '.*: ', ''"') do git checkout origin/%%d
+        ) else (
+            echo Checked out latest tag: %%t
+        )
+        goto :done
+    )
+
+    REM If no tag was found, fallback to default branch
+    echo No tags found, checking out default branch
+    for /f %%d in ('powershell -Command "(git remote show origin) -match 'HEAD branch' -replace '.*: ', ''"') do git checkout origin/%%d
+
+    :done
+    popd
 )
 
-echo.
-echo 📦 Installing BAFF documentation requirements...
-cd external\baff
-pip install -r docs\docRequirements.txt
+echo 📋 Cleaning Output and Copying Default docs
+python copy_package_docs.py
 if %errorlevel% neq 0 (
-    echo ❌ Error installing BAFF requirements
-    cd ..\..
+    echo ❌ Error copying package docs
     exit /b 1
 )
 
 echo.
 echo 📚 Building BAFF documentation...
-cd external\baff
 python docs\generate_matlab_api.py
 if %errorlevel% neq 0 (
     echo ❌ Error generating BAFF API files
-    cd ..\..\..
     exit /b 1
 )
 
@@ -32,45 +52,6 @@ sphinx-build -b html docs docs\build\html
 if %errorlevel% neq 0 (
     echo ❌ Error building BAFF docs
     cd ..\..\..
-    exit /b 1
-)
-cd ..\..
-
-echo.
-echo 📚 Building ADS documentation...
-REM cd external\ads\docs  
-REM python generate_matlab_api.py
-REM if %errorlevel% neq 0 (
-REM     echo ❌ Error generating ADS API files
-REM     cd ..\..\..
-REM     exit /b 1
-REM )
-REM sphinx-build -b html . build\html
-REM if %errorlevel% neq 0 (
-REM     echo ❌ Error building ADS docs
-REM     cd ..\..\..
-REM     exit /b 1
-REM )
-REM cd ..\..\..
-
-echo.
-echo 📋 Copying built docs to main site...
-if not exist "source\_static" mkdir _static
-if not exist "source\_static\baff_docs" mkdir _static\baff_docs
-xcopy /E /I /Y external\baff\docs\build\html\* source\_static\baff_docs\
-if %errorlevel% neq 0 (
-    echo ❌ Error copying BAFF docs
-    exit /b 1
-)
-
-REM if not exist "source\_static\ads_docs" mkdir source\_static\ads_docs
-REM xcopy /E /I /Y external\ads\docs\build\html\* source\_static\ads_docs\
-
-echo.
-echo 🏗️ Building main documentation...
-sphinx-autobuild source build\html
-if %errorlevel% neq 0 (
-    echo ❌ Error building main documentation
     exit /b 1
 )
 

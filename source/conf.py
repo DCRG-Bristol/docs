@@ -39,6 +39,7 @@ napoleon_use_rtype = False  # So that return type lines don’t get repeated
 napoleon_custom_sections = [('Returns', 'params_style')]
 
 autosummary_generate = True
+html_theme_options = {'navigation_depth': 6}
 
 # -- sphinxcontrib-matlabdomain settings ------------------------------------
 

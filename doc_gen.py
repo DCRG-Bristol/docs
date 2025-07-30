@@ -3,7 +3,6 @@ import os
 import shutil
 from collections import defaultdict
 
-
 MATLAB_SRC_DIR = 'tbxs'
 DOCS_DIR = 'docs'
 API_DIR = os.path.join(DOCS_DIR, 'api')
@@ -178,14 +177,15 @@ def clean_docs_folder():
     """
     Remove all files and folders in the docs directory, and copy contents of source folder.
     """
-    for item in os.listdir(DOCS_DIR):
-        item_path = os.path.join(DOCS_DIR, item)
-        if os.path.isdir(item_path):
-            # Remove directory and all contents
-            import shutil
-            shutil.rmtree(item_path)
-        else:
-            os.remove(item_path)
+    if os.path.isdir(DOCS_DIR):
+        for item in os.listdir(DOCS_DIR):
+            item_path = os.path.join(DOCS_DIR, item)
+            if os.path.isdir(item_path):
+                shutil.rmtree(item_path)
+            else:
+                os.remove(item_path)
+    else:
+        os.makedirs(DOCS_DIR, exist_ok=True)
     shutil.copytree('source', DOCS_DIR, dirs_exist_ok=True)
 
 def extract_pkg_docs_to_docs(package):

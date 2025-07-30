@@ -1,7 +1,6 @@
 [submodule "external/baff"]
 	path = external/baff
 	url = https://github.com/dcrg-bristol/baff
-	branch = reworkStations
 [submodule "external/ads"]
 	path = external/ads
 	url = https://github.com/dcrg-bristol/ads
